@@ -1,0 +1,17 @@
+{
+  "name": "postman-backend",
+  "version": "1.0.0",
+  "description": "This is a backend project created for the purpose of learning Postman. The project is designed to have multiple endpoints with different request options, to provide a comprehensive understanding of how Postman works.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "mongoose": "^7.1.1"
+  }
+}
