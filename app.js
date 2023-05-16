@@ -2,7 +2,7 @@ const express = require('express');
 require('dotenv').config()
 const mongoose = require('mongoose');
 const { User, Product, Order, Payment } = require('./schemas/schemas');
-const { GetUsers, CreateUser } = require('./Controllers/UserController');
+const { GetUsers, CreateUser, DeleteUser, UpdateUser } = require('./Controllers/UserController');
 const { CreateToken, RefreshToken } = require('./Controllers/AuthController');
 const app = express();
 const port = process.env.PORT
@@ -19,6 +19,9 @@ app.get('/', (req, res) => {
 
 app.get('/users', GetUsers)
 app.post('/users', CreateUser)
+app.delete('/users', DeleteUser)
+app.put('/users', UpdateUser)
+
 
 app.post('/auth/login', CreateToken)
 app.post('/auth/refresh', RefreshToken)

@@ -1,4 +1,5 @@
 const { User } = require('../schemas/schemas')
+const jwt = require('jsonwebtoken')
 
 const GetUsers = async (req, res) => {
     try {
@@ -23,9 +24,51 @@ const CreateUser = async (req, res) => {
     }
 };
 
+const DeleteUser = async (req, res) => {
+    try {
+        if (req.headers.authorization) {
+            const authHeader = req.headers.authorization;
+            const token = authHeader.split(" ")[1];
+            try {
+                const decoded = jwt.verify(token, process.env.secret);
+                const user = await User.findOneAndRemove(decoded.user[0]);
+                console.log(user);
+                res.send(user);
+            } catch (error) {
+                res.status(401).json({ message: "Invalid Authorization Header" });
+            }
+        } else {
+            res.status(401).json({ message: "Missing Authorization Header" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+};
 
+const UpdateUser = async (req, res) => {
+    try {
+        if (req.headers.authorization) {
+            const authHeader = req.headers.authorization;
+            const token = authHeader.split(" ")[1];
+            try {
+                const decoded = jwt.verify(token, process.env.secret);
+                console.log(decoded.user)
+                const user = User.findOneAndUpdate(decoded.user[0], req.body)
+                res.send(user)
+            } catch (error) {
+                res.status(401).json({ message: "Invalid Authorization Header" });
+            }
+        } else {
+            res.status(401).json({ message: "Missing Authorization Header" });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
+}
 
 module.exports = {
     GetUsers,
-    CreateUser
+    CreateUser,
+    DeleteUser,
+    UpdateUser
 }
