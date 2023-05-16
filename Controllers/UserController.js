@@ -52,10 +52,13 @@ const UpdateUser = async (req, res) => {
             const token = authHeader.split(" ")[1];
             try {
                 const decoded = jwt.verify(token, process.env.secret);
-                console.log(decoded.user)
-                const user = User.findOneAndUpdate(decoded.user[0], req.body)
-                res.send(user)
+                const filter = { _id: decoded.user[0]._id };
+                User.findOneAndUpdate(filter, req.body, { new: true })
+                    .then(updatedUser => {
+                        res.send(updatedUser);
+                    })
             } catch (error) {
+                console.log(error)
                 res.status(401).json({ message: "Invalid Authorization Header" });
             }
         } else {

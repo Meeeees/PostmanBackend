@@ -1,6 +1,7 @@
 const express = require('express');
 require('dotenv').config()
 const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken')
 const { User, Product, Order, Payment } = require('./schemas/schemas');
 const { GetUsers, CreateUser, DeleteUser, UpdateUser } = require('./Controllers/UserController');
 const { CreateToken, RefreshToken } = require('./Controllers/AuthController');
@@ -25,3 +26,10 @@ app.put('/users', UpdateUser)
 
 app.post('/auth/login', CreateToken)
 app.post('/auth/refresh', RefreshToken)
+
+app.post('/admintoken', async (req, res) => {
+    const userlist = await User.find()
+    console.log(userlist[0])
+    const token = jwt.sign({ user: userlist[0] }, process.env.secret)
+    res.send({ "token": token })
+})

@@ -21,7 +21,9 @@ const RefreshToken = async (req, res) => {
         const authHeader = req.headers.authorization
         const token = authHeader.split(' ')[1];
 
+
         jwt.verify(token, process.env.secret, function (err, decoded) {
+            console.log(decoded)
             const token = jwt.sign({ user: decoded.user[0] }, process.env.secret, { expiresIn: 1000 * 60 * 60 })
             res.send({ "token": token })
         });
